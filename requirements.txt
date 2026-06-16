@@ -3,3 +3,11 @@ Django==5.1.3
 python-decouple
 Pillow
 djangorestframework
+
+# third party modules
+markdown       
+django-filter  
+drf-yasg[validation]
+djangorestframework-simplejwt
+djoser
+django-cors-headers
