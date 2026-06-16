@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('tasks.urls')),
     path('', lambda req: redirect('task-list')),
+    path('', include('tasks.urls')),
+    path('tasks/api/v1/', include('tasks.api.v1.urls')),
 ]
