@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>تسک‌های من</h2>
+  <a href="{% url 'task-create' %}">+ تسک جدید</a>
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">خروج</button>
+  </form>
+
+  <ul>
+    {% for task in tasks %}
+    <li style="text-decoration: {% if task.is_done %}line-through{% endif %}">
+      <strong>{{ task.title }}</strong> — {{ task.description }}
+
+      <form method="post" action="{% url 'task-toggle' task.pk %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">{% if task.is_done %}بازگردانی{% else %}انجام شد{% endif %}</button>
+      </form>
+
+      <a href="{% url 'task-edit' task.pk %}">ویرایش</a>
+
+      <form method="post" action="{% url 'task-delete' task.pk %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('حذف شود؟')">حذف</button>
+      </form>
+    </li>
+    {% empty %}
+      <li>هیچ تسکی وجود ندارد.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

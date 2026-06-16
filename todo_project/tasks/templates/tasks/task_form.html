@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>{% if form.instance.pk %}ویرایش{% else %}تسک جدید{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ذخیره</button>
+    <a href="{% url 'task-list' %}">انصراف</a>
+  </form>
+</body>
+</html>
