@@ -6,6 +6,14 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 from .models import Task
 from .forms import TaskForm
+from .forms import SignupForm
+
+
+class SignupView(CreateView):
+    form_class = SignupForm
+    template_name = 'tasks/signup.html'
+    success_url = reverse_lazy('login')
+
 
 
 class TaskListView(LoginRequiredMixin, ListView):

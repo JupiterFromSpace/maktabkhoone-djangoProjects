@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>ورود</title>
+  <title>ثبت‌نام</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Tahoma, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -13,24 +13,31 @@
     input:focus { outline: none; border-color: #6366f1; }
     button { width: 100%; padding: .75rem; background: #6366f1; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
     button:hover { background: #4f46e5; }
+    .login-link { text-align: center; margin-top: 1rem; font-size: .9rem; }
+    .login-link a { color: #6366f1; }
     .errors { color: #dc2626; font-size: .85rem; margin-bottom: 1rem; }
-    .signup-link { text-align: center; margin-top: 1rem; font-size: .9rem; }
-    .signup-link a { color: #6366f1; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>ورود</h2>
+    <h2>ثبت‌نام</h2>
     {% if form.errors %}
-      <div class="errors">نام کاربری یا رمز عبور اشتباه است.</div>
+      <div class="errors">{{ form.errors }}</div>
     {% endif %}
     <form method="post">
       {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">ورود</button>
+      <label>نام کاربری</label>
+      <input type="text" name="username" autofocus>
+      <label>ایمیل</label>
+      <input type="email" name="email">
+      <label>رمز عبور</label>
+      <input type="password" name="password1">
+      <label>تکرار رمز عبور</label>
+      <input type="password" name="password2">
+      <button type="submit">ثبت‌نام</button>
     </form>
-    <div class="signup-link">
-      حساب نداری؟ <a href="{% url 'signup' %}">ثبت‌نام</a>
+    <div class="login-link">
+      حساب داری؟ <a href="{% url 'login' %}">ورود</a>
     </div>
   </div>
 </body>
