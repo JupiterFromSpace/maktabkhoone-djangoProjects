@@ -25,12 +25,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-django
 
       - name: Run tests
-        run: |
-          cd todo_project
-          python -m pytest --tb=short -v
+        working-directory: todo_project
+        run: python -m pytest --tb=short -v
         env:
           DJANGO_SETTINGS_MODULE: todo_project.settings
-          PYTHONPATH: ${{ github.workspace }}/todo_project
+          PYTHONPATH: /home/runner/work/maktabkhoone-djangoProjects/maktabkhoone-djangoProjects/todo_project
