@@ -12,10 +12,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: python:3.12-slim
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -31,7 +27,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
+        working-directory: todo_project
         run: |
-          pytest --tb=short -v
+          pip install pytest pytest-django
+          PYTHONPATH=. pytest --tb=short -v
         env:
           DJANGO_SETTINGS_MODULE: todo_project.settings
