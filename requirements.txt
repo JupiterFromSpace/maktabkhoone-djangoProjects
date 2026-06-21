@@ -11,3 +11,11 @@ drf-yasg[validation]
 djangorestframework-simplejwt
 djoser
 django-cors-headers
+
+
+# refactoring and tests
+black
+flake8
+pytest
+pytest-django
+Faker
