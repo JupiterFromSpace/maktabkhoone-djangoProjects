@@ -12,23 +12,53 @@ services:
     environment:
       - SECRET_KEY=test
       - DEBUG=True
+    depends_on:
+      - redis
+
+  celery:
+    build: .
+    container_name: maktabkhoone-celery
+    command: celery -A todo_project worker -l info
+    volumes:
+      - ./todo_project:/app
+    environment:
+      - SECRET_KEY=test
+      - DEBUG=True
+    depends_on:
+      - redis
+      - backend
+
+  celery-beat:
+    build: .
+    container_name: maktabkhoone-celery-beat
+    command: celery -A todo_project beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./todo_project:/app
+    environment:
+      - SECRET_KEY=test
+      - DEBUG=True
+    depends_on:
+      - redis
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    container_name: maktabkhoone-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
 
   smtp4dev:
-      image: rnwood/smtp4dev:v3
-      restart: always
-      ports:
-        # Change the number before : to the port the web interface should be accessible on
-        - '5000:80'
-        # Change the number before : to the port the SMTP server should be accessible on
-        - '25:25'
-        # Change the number before : to the port the IMAP server should be accessible on
-        - '143:143'
-      volumes:
-        # This is where smtp4dev stores the database..
-          - smtp4dev-data:/smtp4dev
-      environment:
-        - ServerOptions__HostName=smtp4dev
-
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      - '5000:80'
+      - '25:25'
+      - '143:143'
+    volumes:
+      - smtp4dev-data:/smtp4dev
+    environment:
+      - ServerOptions__HostName=smtp4dev
 
 volumes:
   smtp4dev-data:
