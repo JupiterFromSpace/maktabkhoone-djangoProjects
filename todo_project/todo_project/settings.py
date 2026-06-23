@@ -190,4 +190,23 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'tasks.tasks.delete_done_tasks',
         'schedule': crontab(minute='*/10'),
     },
+    'fetch-weather-every-20-minutes': {
+        'task': 'tasks.tasks.fetch_weather',
+        'schedule': crontab(minute='*/20'),
+    },
 }
+
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+OPENWEATHER_API_KEY = 'e8d74b2622c053b4b17e775d1a4691a9'
+OPENWEATHER_CITY = 'Tehran'
