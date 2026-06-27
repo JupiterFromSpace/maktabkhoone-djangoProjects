@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  backend:
+    build: .
+    container_name: maktabkhoone-backend
+    command: gunicorn todo_project.wsgi --bind 0.0.0.0:8000
+    volumes:
+      - ./todo_project:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    expose:
+      - "8000"
+    environment:
+      - SECRET_KEY=test
+      - DEBUG=False
+    depends_on:
+      - redis
+
+  celery:
+    build: .
+    container_name: maktabkhoone-celery
+    command: celery -A todo_project worker -l info
+    volumes:
+      - ./todo_project:/app
+    environment:
+      - SECRET_KEY=test
+      - DEBUG=True
+    depends_on:
+      - redis
+      - backend
+
+  celery-beat:
+    build: .
+    container_name: maktabkhoone-celery-beat
+    command: celery -A todo_project beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./todo_project:/app
+    environment:
+      - SECRET_KEY=test
+      - DEBUG=True
+    depends_on:
+      - redis
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    container_name: maktabkhoone-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+       - ./default.conf:/etc/nginx/conf.d/default.conf
+       - static_volume:/app/staticfiles
+       - media_volume:/app/media
+    depends_on:
+      - redis
+      - backend
+
+volumes:
+  static_volume:
+  media_volume:
+
+
+
+  

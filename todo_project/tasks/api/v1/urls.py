@@ -5,8 +5,8 @@ from tasks.api.v1.views import TaskViewSet, WeatherView
 router = DefaultRouter()
 router.register(r'tasks', TaskViewSet, basename='api-task')
 
-urlpatterns = router.urls  
-
-urlpatterns += [
+urlpatterns = [
     path('weather/', WeatherView.as_view(), name='weather'),
 ]
+
+urlpatterns += router.urls
