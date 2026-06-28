@@ -70,5 +70,17 @@ volumes:
   media_volume:
 
 
+#solution of filtering dockerhub(using mirrors!)
 
-  
+
+#mkdir -p /etc/docker
+#cat > /etc/docker/daemon.json << 'EOF'
+#{
+#  "registry-mirrors": [
+#    "https://mirror.iranserver.com/docker",
+#    "https://registry.docker.ir"
+#  ]
+#}
+#EOF
+#
+#systemctl restart docker
