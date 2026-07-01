@@ -3,6 +3,7 @@ django == 5.2
 python-decouple
 Pillow
 djangorestframework
+psycopg2-binary
 
 # third party modules
 markdown       
@@ -11,6 +12,7 @@ drf-yasg[validation]
 djangorestframework-simplejwt
 djoser
 django-cors-headers
+
 
 
 # refactoring and tests
