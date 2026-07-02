@@ -16,9 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Setup Docker-Compose
-      run: docker-compose up -d
+      run: docker compose up -d
     - name: Run Tests
-      run: docker-compose exec -T web python manage.py test
+      run: docker compose exec -T backend python manage.py test
 
   Deploy:
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }} 
