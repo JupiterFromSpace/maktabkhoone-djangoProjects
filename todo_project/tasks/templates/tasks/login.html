@@ -27,10 +27,10 @@
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">ورود</button>
+      <button type="submit">login</button>
     </form>
     <div class="signup-link">
-      حساب نداری؟ <a href="{% url 'signup' %}">ثبت‌نام</a>
+      حساب نداری؟ <a href="{% url 'signup' %}">signup</a>
     </div>
   </div>
 </body>
