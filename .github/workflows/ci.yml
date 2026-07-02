@@ -36,21 +36,23 @@ jobs:
         run: |
           docker compose down -v
 
-  deploy:
-    runs-on: ubuntu-latest
+  Deploy:
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }} 
+    name: Deploy
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            cd /root/maktabkhoone-djangoProjects
-            git pull origin main
-            docker compose -f docker-compose-stage.yml down
-            docker compose -f docker-compose-stage.yml up -d --build
-            docker compose -f docker-compose-stage.yml exec -T backend python manage.py migrate
-            docker compose -f docker-compose-stage.yml exec -T backend python manage.py collectstatic --noinput
+    - uses: actions/checkout@v3
+    - name: Connect and Execute Commands
+      uses: appleboy/ssh-action@master
+      with:
+        username: ${{secrets.USERNAME}}
+        password: ${{secrets.PASSWORD}}
+        host: ${{secrets.HOST}}
+        port: ${{secrets.PORT}}
+        script: |
+          cd ${{secrets.PROJECT_PATH}}
+          docker-compose -f docker-compose-stage.yml stop
+          git pull
+          docker-compose -f docker-compose-stage.yml restart
+          
