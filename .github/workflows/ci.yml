@@ -36,11 +36,11 @@ jobs:
         port: ${{secrets.PORT}}
         script: |
           cd ${{secrets.PROJECT_PATH}}
-          docker-compose -f docker-compose-stage.yml stop
+          docker compose -f docker-compose-stage.yml stop
           git pull
-          docker-compose -f docker-compose-stage.yml up -d --build
+          docker compose -f docker-compose-stage.yml up -d --build
               
-          docker-compose -f docker-compose-stage.yml exec -T backend python manage.py migrate
+          docker compose -f docker-compose-stage.yml exec -T backend python manage.py migrate
               
-          docker-compose -f docker-compose-stage.yml exec -T backend python manage.py collectstatic --noinput
+          docker compose -f docker-compose-stage.yml exec -T backend python manage.py collectstatic --noinput
           
