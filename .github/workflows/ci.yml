@@ -17,7 +17,7 @@ jobs:
 
       - name: Build and start containers
         run: |
-          docker compose up -d --build
+          docker compose -f docker-compose-stage.yml up -d --build
 
       - name: Wait for database
         run: |
@@ -25,11 +25,11 @@ jobs:
 
       - name: Run migrations
         run: |
-          docker compose exec -T backend python manage.py migrate
+          docker compose -f docker-compose-stage.yml exec -T backend python manage.py migrate
 
       - name: Run tests
         run: |
-          docker compose exec -T backend pytest --tb=short -v
+          docker compose -f docker-compose-stage.yml exec -T backend pytest
 
       - name: Stop containers
         if: always()
